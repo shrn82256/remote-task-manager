@@ -1,0 +1,96 @@
+<html>
+<head>
+	<title>File Systems</title>
+	<script type = "text/javascript" src = "{{ url_for('static', filename = 'jquery-3.3.1.min.js') }}" ></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+	<script src="https://use.fontawesome.com/8dd9346bcc.js"></script>
+	<style type="text/css">
+		.table td, .table th {
+			vertical-align: middle;
+		}
+	</style>
+</head>
+<body>
+	<nav class="navbar navbar-dark bg-primary sticky-top navbar-expand-lg">
+		<a class="navbar-brand" href="#">Task Manager</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+			<div class="navbar-nav">
+				<a class="nav-item nav-link" href="/">Processes</a>
+				<a class="nav-item nav-link" href="resources">Resources</a>
+				<a class="nav-item nav-link active" href="filesystem">File Systems <span class="sr-only">(current)</span></a>
+			</div>
+		</div>
+	</nav>
+	<div class="container-fluid">
+		<br>
+		<h1>File Systems</h1>
+		<br>
+		<table id="fsTable" class="table table-hover table-striped header-fixed">
+			<thead class="thead-dark">
+				<tr>
+					<th scope="col">
+						#
+					</th>
+					<th scope="col">
+						Device
+					</th>
+					<th scope="col">
+						Directory
+					</th>
+					<th scope="col">
+						Type
+					</th>
+					<th scope="col">
+						Total
+					</th>
+					<th scope="col">
+						Available
+					</th>
+					<th scope="col">
+						Used
+					</th>
+					<th scope="col">
+						%
+					</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+	</div>
+<script type="text/javascript">
+	function updateFileSystemsData() {
+		$.ajax({
+			url: '/fsdata',
+			type: 'POST',
+			success: function(response) {
+				var obj = jQuery.parseJSON(response);
+				var fsBody = "";
+				// $('h1').html(obj);
+				for (var i = 0; i < obj.length; i++) {
+					fsBody += "<tr>";
+					fsBody += "<th scope='row'>" + (i+1) + "</th>";
+					fsBody += "<td>" + obj[i][0] + "</td>";
+					fsBody += "<td>" + obj[i][1] + "</td>";
+					fsBody += "<td>" + obj[i][2] + "</td>";
+					fsBody += "<td>" + obj[i][3] + "</td>";
+					fsBody += "<td>" + obj[i][4] + "</td>";
+					fsBody += "<td>" + obj[i][5] + "</td>";
+					fsBody += "<td>" + obj[i][6] + "</td>";
+					fsBody += "</tr>";
+				}
+				$('#fsTable tbody').html(fsBody);
+			}
+		});
+	}
+	updateFileSystemsData();
+	k = setTimeout(updateFileSystemsData, 5000);
+
+</script>
+</body>
+</html>

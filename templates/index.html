@@ -1,0 +1,116 @@
+<html>
+<head>
+	<title>Processes</title>
+	<script type = "text/javascript" src = "{{ url_for('static', filename = 'jquery-3.3.1.min.js') }}" ></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+	<script src="https://use.fontawesome.com/8dd9346bcc.js"></script>
+	<style type="text/css">
+		.table td, .table th {
+			vertical-align: middle;
+		}
+	</style>
+</head>
+<body>
+	<nav class="navbar navbar-dark bg-primary sticky-top navbar-expand-lg">
+		<a class="navbar-brand" href="#">Task Manager</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+			<div class="navbar-nav">
+				<a class="nav-item nav-link active">Processes <span class="sr-only">(current)</span></a>
+				<a class="nav-item nav-link" href="resources">Resources</a>
+				<a class="nav-item nav-link" href="filesystem">File Systems</a>
+			</div>
+		</div>
+	</nav>
+	<div class="container-fluid">
+		<br>
+		<h1>Processes</h1>
+		<br>
+		<table id="processesTable" class="table table-hover table-striped header-fixed">
+			<thead class="thead-dark">
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Process Name</th>
+					<th scope="col">
+						<i class="fa fa-user" aria-hidden="true"></i>
+						User
+					</th>
+					<th scope="col">
+						<i class="fa fa-pie-chart" aria-hidden="true"></i>
+						CPU %
+					</th>
+					<th scope="col">
+						<i class="fa fa-cogs" aria-hidden="true"></i>
+						PID
+					</th>
+					<th scope="col">
+						<i class="fa fa-server" aria-hidden="true"></i>	
+						# Threads
+					</th>
+					<th scope="col">
+						<i class="fa fa-clipboard" aria-hidden="true"></i>
+						Status
+					</th>
+					<th scope="col">
+						<i class="fa fa-star" aria-hidden="true"></i>
+						Priority
+					</th>
+					<th scope="col">
+						Kill
+					</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+	</div>
+<script type="text/javascript">
+	function updateProcessesData() {
+		$.ajax({
+			url: '/processes',
+			type: 'POST',
+			success: function(response) {
+				var obj = jQuery.parseJSON(response);
+				var processesBody = "";
+				
+				for (var i = 0; i < obj.length; i++) {
+					processesBody += "<tr>";
+					processesBody += "<th scope='row'>" + (i+1) + "</th>";
+					processesBody += "<td>" + obj[i]['name'] + "</td>";
+					processesBody += "<td>" + obj[i]['username'] + "</td>";
+					processesBody += "<td>" + obj[i]['cpu_percent'] + "</td>";
+					processesBody += "<td>" + obj[i]['pid'] + "</td>";
+					processesBody += "<td>" + obj[i]['num_threads'] + "</td>";
+					processesBody += "<td>" + obj[i]['status'] + "</td>";
+					processesBody += "<td>" + obj[i]['nice'] + "</td>";
+					processesBody += "<td><button type='button' class='killButton btn btn-danger' onclick='killProcess(" + obj[i]['pid'] + ")'>Kill</button></td>";
+					processesBody += "</tr>";
+				}
+				$('#processesTable tbody').html(processesBody);
+			}
+		});
+	}
+	updateProcessesData();
+	k = setTimeout(updateProcessesData, 2500);
+
+	function killProcess(pid) {
+		$.ajax({
+				url: '/killproc',
+				data: {
+					pid: pid
+				},
+				type: 'POST',
+				success: function(response) {
+					updateProcessesData();
+				}
+			});
+	}
+
+	
+</script>
+</body>
+</html>
