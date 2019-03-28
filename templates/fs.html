@@ -1,22 +1,31 @@
 <html>
+
 <head>
 	<title>File Systems</title>
-	<script type = "text/javascript" src = "{{ url_for('static', filename = 'jquery-3.3.1.min.js') }}" ></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename = 'jquery-3.3.1.min.js') }}"></script>
+	<script src="{{ url_for('static', filename = 'popper.min.js') }}"
+		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+	</script>
+	<link rel="stylesheet" href="{{ url_for('static', filename = 'bootstrap.min.css') }}"
+		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="{{ url_for('static', filename = 'bootstrap.min.js') }}"
+		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+	</script>
 
-	<script src="https://use.fontawesome.com/8dd9346bcc.js"></script>
+	<script src="{{ url_for('static', filename = '8dd9346bcc.js') }}"></script>
 	<style type="text/css">
-		.table td, .table th {
+		.table td,
+		.table th {
 			vertical-align: middle;
 		}
 	</style>
 </head>
+
 <body>
 	<nav class="navbar navbar-dark bg-primary sticky-top navbar-expand-lg">
 		<a class="navbar-brand" href="#">Task Manager</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+			aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
@@ -63,34 +72,34 @@
 			<tbody></tbody>
 		</table>
 	</div>
-<script type="text/javascript">
-	function updateFileSystemsData() {
-		$.ajax({
-			url: '/fsdata',
-			type: 'POST',
-			success: function(response) {
-				var obj = jQuery.parseJSON(response);
-				var fsBody = "";
-				// $('h1').html(obj);
-				for (var i = 0; i < obj.length; i++) {
-					fsBody += "<tr>";
-					fsBody += "<th scope='row'>" + (i+1) + "</th>";
-					fsBody += "<td>" + obj[i][0] + "</td>";
-					fsBody += "<td>" + obj[i][1] + "</td>";
-					fsBody += "<td>" + obj[i][2] + "</td>";
-					fsBody += "<td>" + obj[i][3] + "</td>";
-					fsBody += "<td>" + obj[i][4] + "</td>";
-					fsBody += "<td>" + obj[i][5] + "</td>";
-					fsBody += "<td>" + obj[i][6] + "</td>";
-					fsBody += "</tr>";
+	<script type="text/javascript">
+		function updateFileSystemsData() {
+			$.ajax({
+				url: '/fsdata',
+				type: 'POST',
+				success: function (response) {
+					var obj = jQuery.parseJSON(response);
+					var fsBody = "";
+					// $('h1').html(obj);
+					for (var i = 0; i < obj.length; i++) {
+						fsBody += "<tr>";
+						fsBody += "<th scope='row'>" + (i + 1) + "</th>";
+						fsBody += "<td>" + obj[i][0] + "</td>";
+						fsBody += "<td>" + obj[i][1] + "</td>";
+						fsBody += "<td>" + obj[i][2] + "</td>";
+						fsBody += "<td>" + obj[i][3] + "</td>";
+						fsBody += "<td>" + obj[i][4] + "</td>";
+						fsBody += "<td>" + obj[i][5] + "</td>";
+						fsBody += "<td>" + obj[i][6] + "</td>";
+						fsBody += "</tr>";
+					}
+					$('#fsTable tbody').html(fsBody);
 				}
-				$('#fsTable tbody').html(fsBody);
-			}
-		});
-	}
-	updateFileSystemsData();
-	k = setTimeout(updateFileSystemsData, 5000);
-
-</script>
+			});
+		}
+		updateFileSystemsData();
+		setInterval(updateFileSystemsData, 5000);
+	</script>
 </body>
+
 </html>

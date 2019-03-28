@@ -1,24 +1,33 @@
 <html>
+
 <head>
 	<title>Resources</title>
-	<script type = "text/javascript" src = "{{ url_for('static', filename = 'jquery-3.3.1.min.js') }}" ></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename = 'jquery-3.3.1.min.js') }}"></script>
+	<script src="{{ url_for('static', filename = 'popper.min.js') }}"
+		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+	</script>
+	<link rel="stylesheet" href="{{ url_for('static', filename = 'bootstrap.min.css') }}"
+		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="{{ url_for('static', filename = 'bootstrap.min.js') }}"
+		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+	</script>
 
-	<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+	<script src="{{ url_for('static', filename = '8dd9346bcc.js') }}"></script>
 
-	<script src="https://use.fontawesome.com/8dd9346bcc.js"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename = 'canvasjs.min.js') }}"></script>
 	<style type="text/css">
-		.table td, .table th {
+		.table td,
+		.table th {
 			vertical-align: middle;
 		}
 	</style>
 </head>
+
 <body>
 	<nav class="navbar navbar-dark bg-primary sticky-top navbar-expand-lg">
 		<a class="navbar-brand" href="#">Task Manager</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+			aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
@@ -35,84 +44,99 @@
 		<br>
 		<div id="CPUChart" style="height: 300px; width: 100%;"></div>
 	</div>
-<script type="text/javascript">
-	window.onload = function () {
-		var dps0 = [];
-		var dps1 = [];
-		var dps2 = [];
-		var dps3 = [];
-		
-		var chart = new CanvasJS.Chart("CPUChart", {
-			title: {
-				text: "CPU Utilization"
-			},
-			axisX: {						
-				title: "Seconds",
-				minimum: 0
-			},
-			axisY: {						
-				title: "Percentage",
-				maximum: 100
-			},
-			data: [{
-				type: "line",
-				legendText: "CPU0",
-				showInLegend: true,
-				dataPoints : dps0
-			}, {
-				type: "line",
-				legendText: "CPU1",
-				showInLegend: true,
-				dataPoints : dps1
-			}, {
-				type: "line",
-				legendText: "CPU2",
-				showInLegend: true,
-				dataPoints : dps2
-			}, {
-				type: "line",
-				legendText: "CPU3",
-				showInLegend: true,
-				dataPoints : dps3
-			}]
-		});
+	<script type="text/javascript">
+		window.onload = function () {
+			var dps0 = [];
+			var dps1 = [];
+			var dps2 = [];
+			var dps3 = [];
 
-		chart.render();
-		var xVal = -2;
-		var yVal = 15;	
-		var updateInterval = 2000;
-		var maxPoints = 20;
-
-		var updateChart = function () {
-			$.ajax({
-				url: '/cpugraphdata',
-				type: 'POST',
-				success: function(response) {
-					var obj = jQuery.parseJSON(response);
-					yVal = obj[0]
-					dps0.push({x: xVal,y: obj[0]});
-					dps1.push({x: xVal,y: obj[1]});
-					dps2.push({x: xVal,y: obj[2]});
-					dps3.push({x: xVal,y: obj[3]});
-				}
+			var chart = new CanvasJS.Chart("CPUChart", {
+				title: {
+					text: "CPU Utilization"
+				},
+				axisX: {
+					title: "Seconds",
+					minimum: 0
+				},
+				axisY: {
+					title: "Percentage",
+					maximum: 100
+				},
+				data: [{
+					type: "line",
+					legendText: "CPU0",
+					showInLegend: true,
+					dataPoints: dps0
+				}, {
+					type: "line",
+					legendText: "CPU1",
+					showInLegend: true,
+					dataPoints: dps1
+				}, {
+					type: "line",
+					legendText: "CPU2",
+					showInLegend: true,
+					dataPoints: dps2
+				}, {
+					type: "line",
+					legendText: "CPU3",
+					showInLegend: true,
+					dataPoints: dps3
+				}]
 			});
-			// yVal = yVal +  Math.round(5 + Math.random() *(-5-5));
-			
-			xVal += 2;
-			if (dps0.length > maxPoints )
-				dps0.shift();
-			if (dps1.length > maxPoints )
-				dps1.shift();
-			if (dps2.length > maxPoints )
-				dps2.shift();
-			if (dps3.length > maxPoints )
-				dps3.shift();
 
-			chart.render();	
-		};
-		updateChart();
-		setInterval(function(){updateChart()}, updateInterval); 
-	}
-</script>
+			chart.render();
+			var xVal = -2;
+			var yVal = 15;
+			var updateInterval = 2000;
+			var maxPoints = 20;
+
+			var updateChart = function () {
+				$.ajax({
+					url: '/cpugraphdata',
+					type: 'POST',
+					success: function (response) {
+						var obj = jQuery.parseJSON(response);
+						yVal = obj[0]
+						dps0.push({
+							x: xVal,
+							y: obj[0]
+						});
+						dps1.push({
+							x: xVal,
+							y: obj[1]
+						});
+						dps2.push({
+							x: xVal,
+							y: obj[2]
+						});
+						dps3.push({
+							x: xVal,
+							y: obj[3]
+						});
+					}
+				});
+				// yVal = yVal +  Math.round(5 + Math.random() *(-5-5));
+
+				xVal += 2;
+				if (dps0.length > maxPoints)
+					dps0.shift();
+				if (dps1.length > maxPoints)
+					dps1.shift();
+				if (dps2.length > maxPoints)
+					dps2.shift();
+				if (dps3.length > maxPoints)
+					dps3.shift();
+
+				chart.render();
+			};
+			updateChart();
+			setInterval(function () {
+				updateChart()
+			}, updateInterval);
+		}
+	</script>
 </body>
+
 </html>
